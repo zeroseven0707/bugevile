@@ -1,0 +1,14 @@
+.popup_atribut{
+    width: 100%;
+    height: 14vw;
+    position: relative;
+}
+.popup_atribut img{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
