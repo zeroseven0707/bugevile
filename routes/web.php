@@ -9,6 +9,9 @@ use App\Http\Controllers\SpecificationController;
 use App\Http\Controllers\SpesifikasiPrintController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\LampiranController;
+use App\Http\Controllers\UploadController;
+use App\Http\Controllers\LaporanController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,13 +39,23 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::delete('/admin/pelanggan/{id}', [PelangganController::class, 'destroy'])->name('admin.pelanggan.destroy');
     Route::get('/admin/pelanggan/search-ajax', [PelangganController::class, 'searchAjax'])->name('admin.pelanggan.searchAjax');
     Route::get('/admin/pelanggan/filterAjax', [PelangganController::class, 'filterAjax'])->name('admin.pelanggan.filterAjax');
-    Route::get('/admin/master', [ProductController::class, 'create'])->name('admin.master.index');
-    Route::get('/admin/data-master', [ProductController::class, 'index'])->name('admin.master.index');
-    Route::get('/admin/master/create', [ProductController::class, 'create'])->name('admin.master.create');
+    // master produk
+    Route::get('/admin/data-master', [ProductController::class, 'index']);
     Route::post('/admin/master', [ProductController::class, 'store'])->name('admin.master.store');
+    Route::get('/admin/master', [ProductController::class, 'create'])->name('admin.master.index');
+    Route::delete('/admin/master/{id}', [ProductController::class, 'destroy'])->name('admin.master.destroy');
+    // Pemesanan
+    Route::get('/admin/detail-pemesanan/{id}', [PemesananController::class, 'show']);
+    Route::get('/admin/progress/{id}', [PemesananController::class, 'progress']);
+    Route::get('/admin/laporan', [LaporanController::class, 'index']);
+    Route::post('/upload/progress/{id}', [UploadController::class, 'uploadProgress'])->name('upload.progress');
+
     Route::get('/admin/master-pemesanan', [PemesananController::class, 'index']);
     Route::post('/admin/master-pemesanan', [PemesananController::class, 'store']);
     Route::delete('/admin/master-pemesanan/{id}', [PemesananController::class, 'destroy']);
+
+    Route::resource('lampiran', LampiranController::class)->names('lampiran');
+    // Attribute dan Print
     Route::post('/add-subattributes', [AjaxController::class, 'store'])->name('add-subattributes');
     Route::resource('atribute', AtributController::class);
     Route::resource('print', SpesifikasiPrintController::class);

@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Pemesanan;
 use App\Models\Pelanggan;
 use App\Models\Product;
+use App\Models\Progress;
+use App\Models\Lampiran;
+use App\Models\Attribute;
 use Illuminate\Support\Facades\DB;
 
 class PemesananController extends Controller
@@ -43,27 +46,37 @@ class PemesananController extends Controller
      */
     public function store(Request $request)
     {
-        // Menghasilkan nomor transaksi
-        $prefix = 'PO';
-        $randomNumber = mt_rand(100000000000, 999999999999);
-        $request['nomor_transaksi'] = $prefix . $randomNumber;
+        try {
+            // Menghasilkan nomor transaksi dengan prefix dan nomor acak
+            $prefix = 'PO';
+            $randomNumber = mt_rand(100000000000, 999999999999);
+            $request['nomor_transaksi'] = $prefix . $randomNumber;
 
-        // Mengubah format tanggal
-        $dateTime = \DateTime::createFromFormat('d/m/Y', $request->tanggal_masuk);
-        $dateTimeKeluar = \DateTime::createFromFormat('d/m/Y', $request->tanggal_selesai);
+            // Ubah format tanggal masuk dan tanggal selesai
+            $dateTime = \DateTime::createFromFormat('d/m/Y', $request->tanggal_masuk);
+            $dateTimeKeluar = \DateTime::createFromFormat('d/m/Y', $request->tanggal_selesai);
 
-        if ($dateTime && $dateTimeKeluar) {
-            $tanggalMasuk = $dateTime->format('Y-m-d');
-            $tanggalKeluar = $dateTimeKeluar->format('Y-m-d');
-            $request['tanggal_masuk'] = $tanggalMasuk;
-            $request['tanggal_selesai'] = $tanggalKeluar;
-        } else {
-            // Tangani kesalahan jika format tidak valid
-            throw new Exception("Format tanggal tidak valid");
+            if ($dateTime && $dateTimeKeluar) {
+                $tanggalMasuk = $dateTime->format('Y-m-d');
+                $tanggalKeluar = $dateTimeKeluar->format('Y-m-d');
+                $request['tanggal_masuk'] = $tanggalMasuk;
+                $request['tanggal_selesai'] = $tanggalKeluar;
+            } else {
+                // Tangani kesalahan jika format tanggal tidak valid
+                return redirect()->back()->with('error', 'Format tanggal tidak valid. Gunakan format d/m/Y.')->withInput();
+            }
+            $product = Product::where('nama_produk',$request->jenis_produk)->where('jenis_pola',$request->jenis_pola)->where('jenis_print',$request->jenis_print)->first();
+            $request['product_id'] = $product->id;
+            // Simpan data pemesanan ke database
+            Pemesanan::create($request->all());
+
+            // Jika berhasil, kembalikan pesan sukses
+            return redirect()->back()->with('success', 'Pemesanan berhasil ditambahkan.');
+
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika terjadi exception
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
-        // Simpan data pemesanan
-        Pemesanan::create($request->all());
-        return back()->with('success','Pemesanan berhasil ditambahkan.');
     }
 
     /**
@@ -74,7 +87,18 @@ class PemesananController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['pemesanan'] = Pemesanan::with('product')->find($id);
+        $data['attribute'] = Attribute::where('product_id',$data['pemesanan']->product->id)->with('master_attribute')->get();
+        $data['lampiran'] = Lampiran::where('detail_pemesanan_id',$id)->get();
+        // dd($data['attribute']);
+        return view('admin.pemesanan.detail-pemesanan',$data);
+
+    }
+    public function progress($id)
+    {
+        $data['pemesanan'] = Pemesanan::with('product')->find($id);
+        $data['progress'] = Progress::where('pemesanan_id',$data['pemesanan']->id)->first();
+        return view('admin.pemesanan.progress',$data);
     }
 
     /**

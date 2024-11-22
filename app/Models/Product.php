@@ -22,6 +22,10 @@ class Product extends Model
         'laba',
         'foto'
     ];
+    public function attribute()
+    {
+        return $this->hasMany(Attribute::class, 'product_id');
+    }
 
     // Additional model methods and properties can go here
 }

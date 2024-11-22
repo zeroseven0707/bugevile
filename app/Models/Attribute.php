@@ -8,7 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Attribute extends Model
 {
     use HasFactory;
+    protected $guarded = ['id'];
 
-    protected $fillable = ['id_spesifikasi', 'nama', 'harga'];
-
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function master_attribute()
+    {
+        return $this->belongsTo(MasterAtribute::class, 'attribute_id');
+    }
 }

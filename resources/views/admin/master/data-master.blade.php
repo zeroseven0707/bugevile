@@ -1,12 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    /* Menambahkan margin bawah pada div yang membungkus search dan per page */
+.flex.mb-4 {
+    margin-bottom: 1rem; /* Anda bisa menyesuaikan margin sesuai kebutuhan */
+}
+
+/* Menambahkan gap antara elemen-elemen dalam flex */
+.flex.gap-4 {
+    gap: 1rem; /* Menambahkan jarak antar elemen di dalam flex container */
+}
+
+</style>
 <div class="p-10 max-h-max">
     <div class="flex">
         <h1 class="text-2xl mb-4">Data Master Produk</h1>
     </div>
-    <div class="bg-white p-6 rounded-2xl">
-        <div class="flex justify-between items-end mb-4 w-full">
+    <div class="bg-white p-10 rounded-2xl">
+        {{-- <div class="flex justify-between items-end mb-4 w-full">
             <form class="w-max flex justify-center items-center gap-3">
                 <select id="countries" class="bg-slate-600 text-white border border-slate-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 px-4 py-2.5">
                     <option selected>Urutkan Berdasarkan</option>
@@ -30,21 +42,27 @@
                 </div>
             </form>
 
-        </div>
-        <div class="px-3 border">
-            <table class="border-separate border-0 border-spacing-y-3 w-full">
-                <tr>
-                    <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">No</th>
-                    <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Kode</th>
-                    <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Nama Produk</th>
-                    <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Jenis Pola</th>
-                    <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Jenis Print</th>
-                    <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Harga Pola</th>
-                    <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Harga Print</th>
-                    <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Harga Jual</th>
-                    <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2">Aksi</th>
-                </tr>
-                @foreach ($products as $key => $product)
+        </div> --}}
+        <div class="px-7">
+            <!-- Bagian Search dan Per Page -->
+
+            <!-- Tabel Produk -->
+            <table id="datatable" class="display border-separate border-0 border-spacing-y-3 w-full">
+                <thead>
+                    <tr>
+                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">No</th>
+                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Kode</th>
+                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Nama Produk</th>
+                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Jenis Pola</th>
+                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Jenis Print</th>
+                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Harga Pola</th>
+                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Harga Print</th>
+                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1">Harga Jual</th>
+                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($products as $key => $product)
                     <tr>
                         <td class="font-normal bg-slate-200 py-3 px-1 text-center">{{ $key+1 }}</td>
                         <td class="font-normal bg-slate-200 py-3 px-1 text-center">{{ $product['kode_produk'] }}</td>
@@ -56,14 +74,37 @@
                         <td class="font-normal bg-slate-200 py-3 px-1 text-center">Rp. {{ number_format($product['harga_jual']) }}</td>
                         <td class="font-normal bg-slate-200 py-3 px-1 text-center">
                             <div class="flex gap-2 justify-center">
-                                <button type="button" class="rounded-md bg-blue-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"><i class="ri-edit-2-line"></i></button>
-                                <button type="button" class="rounded-md bg-red-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"><i class="ri-delete-bin-line"></i></button>
+                                <button type="button" class="rounded-md bg-blue-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-blue-700"><i class="ri-edit-2-line"></i></button>
+                                <form action="{{ route('admin.master.destroy', $product['id']) }}" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="rounded-md bg-red-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-red-700"><i class="ri-delete-bin-line"></i></button>
+                                </form>
                             </div>
                         </td>
                     </tr>
-                @endforeach
+                    @endforeach
+                </tbody>
             </table>
+        </div>
+
+        <div>
+            <button class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700">Print</button>
+            <a href="{{ url('admin/master') }}">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Tambah Data</button>
+            </a>
         </div>
     </div>
 </div>
+<script>
+$(document).ready(function() {
+    // Inisialisasi DataTable
+    var table = $('#datatable').DataTable({
+        "pagingType": "simple", // Pagination sederhana
+        "searching": true,     // Nonaktifkan pencarian default
+        "lengthChange": true,  // Nonaktifkan pengaturan jumlah per halaman default
+        "pageLength": 10,       // Set default number of rows per page
+    });
+});
+</script>
 @endsection

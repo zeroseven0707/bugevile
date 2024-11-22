@@ -11,7 +11,7 @@ class CreateAttributesTable extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('atribute_id')->constrained('master_atributes')->onDelete('cascade');
+            $table->foreignId('attribute_id')->constrained('master_atributes')->onDelete('cascade');
             $table->timestamps();
         });
     }

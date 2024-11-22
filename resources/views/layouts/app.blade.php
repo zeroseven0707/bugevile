@@ -86,9 +86,12 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="../css/style.css">
-
+    @livewireStyles
     <title>Admin Panel</title>
 </head>
 <body class="text-gray-800 font-inter">
@@ -106,27 +109,27 @@
             </a>
         </li>
         <li class="mb-1 group">
-            <a href="{{ url('admin/master') }}" class="flex font-normal items-center py-2 px-4 text-white hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                <i class="ri-archive-2-line mr-3 text-lg"></i>
-                <span class="text-base">Master</span>
-            </a>
-        </li>
-        <li class="mb-1 group">
             <a href="{{ url('admin/data-master') }}" class="flex font-normal items-center py-2 px-4 text-white hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class="ri-file-list-2-line mr-3 text-lg"></i>
-                <span class="text-base">Data Master</span>
+                <span class="text-base">Master</span>
             </a>
         </li>
         <li class="mb-1 group">
             <a href="{{ url('admin/pelanggan') }}" class="flex font-normal items-center py-2 px-4 text-white hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class="ri-shield-user-line mr-3 text-lg"></i>
-                <span class="text-base">Master Pelanggan</span>
+                <span class="text-base">Pelanggan</span>
             </a>
         </li>
         <li class="mb-1 group">
             <a href="{{ url('admin/master-pemesanan') }}" class="flex font-normal items-center py-2 px-4 text-white hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class="ri-shopping-cart-2-line mr-3 text-lg"></i>
-                <span class="text-base">Master Pemesanan</span>
+                <span class="text-base">Pemesanan</span>
+            </a>
+        </li>
+        <li class="mb-1 group">
+            <a href="{{ url('admin/laporan') }}" class="flex font-normal items-center py-2 px-4 text-white hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                <i class="ri-file-list-3-line mr-3 text-lg"></i>
+                <span class="text-base">Laporan</span>
             </a>
         </li>
     </ul>
@@ -171,7 +174,10 @@
                             <h2 class="text-sm font-semibold text-gray-800">Admin Bugevile</h2>
                         </div>
                     </button>
-                    <button type="submit" class="rounded-md bg-red-500 px-3 py-1 text-sm font-normal text-white shadow-sm hover:bg-red-700">Logout <i class="ri-logout-circle-r-line"></i></button>
+                    <form action="{{ url('logout') }}" method="post">
+                        @csrf
+                        <button type="submit" class="rounded-md bg-red-500 px-3 py-1 text-sm font-normal text-white shadow-sm hover:bg-red-700">Logout <i class="ri-logout-circle-r-line"></i></button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -389,6 +395,6 @@
 
 
     </script>
-
+@livewireScripts
 </body>
 </html>

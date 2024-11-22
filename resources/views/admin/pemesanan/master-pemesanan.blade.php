@@ -4,6 +4,16 @@
     <div class="flex">
         <h1 class="text-2xl mb-4">Tambah Data Pemesanan</h1>
     </div>
+    @if(session('success'))
+    <div class="bg-green-500 text-white p-2 mb-4 rounded">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('error'))
+        <div class="bg-red-500 text-white p-2 mb-4 rounded">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="bg-white p-8 rounded-2xl">
         <form action="{{ url('/admin/master-pemesanan') }}" method="POST">
             @csrf
@@ -87,7 +97,7 @@
                             <select id="jenis_pola" name="jenis_pola" class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
                                 <option selected>Pilih Pola</option>
                                 @foreach ($pola as $pola)
-                                    <option value="{{ $pola['id'] }}">{{ $pola['jenis_pola'] }}</option>
+                                    <option value="{{ $pola['jenis_pola'] }}">{{ $pola['jenis_pola'] }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -99,7 +109,7 @@
                             <select id="jenis_print" name="jenis_print" class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
                                 <option selected>Pilih Print</option>
                                 @foreach ($print as $print)
-                                    <option value="{{ $print['id'] }}">{{ $print['jenis_print'] }}</option>
+                                    <option value="{{ $print['jenis_print'] }}">{{ $print['jenis_print'] }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -216,63 +226,58 @@
         <h1 class="text-2xl mb-4">Data Master Pemesanan</h1>
         <div class="bg-white p-6 rounded-2xl">
             <div class="flex justify-between items-end mb-4 w-full">
-                    <select id="countries" class="bg-slate-600 text-white border border-slate-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 px-4 py-2.5">
-                        <option selected>Urutkan Berdasarkan</option>
-                        <option value="US">Tanggal Masuk</option>
-                        <option value="DE">Produk</option>
-                        <option value="DE">Pelanggan</option>
-                        <option value="DE">Progress</option>
-                    </select>
-
-                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Cari</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                            </svg>
-                        </div>
-                        <input type="search" id="default-search" class="block w-full p-4 py-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-slate-600 focus:ring-blue-500 focus:border-blue-500" placeholder="Cari Pesanan" required />
-                        <button type="submit" style="top:50%; transform:translateY(-50%);" class="text-white absolute right-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-normal rounded-lg text-sm px-3 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cari</button>
-                    </div>
-
+                <div class="relative">
+                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Cari</label>
+                </div>
             </div>
             <div class="px-3 border">
-                <table class="border-separate border-0 border-spacing-y-3 w-full">
-                    <tr>
-                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1 w-10">No</th>
-                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 w-44">Nomor Transaksi</th>
-                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 w-44">Tanggal Masuk</th>
-                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 w-44">Produk</th>
-                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 w-44">Pelanggan</th>
-                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 w-44">Progress</th>
-                        <th class="border border-slate-700 bg-slate-600 text-white font-normal py-2 px-1 w-10">Aksi</th>
-                    </tr>
-                    @foreach ($pemesanans as $key => $pemesanan)
+                <table id="datatable" class="display w-full">
+                    <thead>
                         <tr>
-                            <td class="bg-slate-200 font-normal py-3 px-1 text-center">{{ $key+1 }}</td>
-                            <td class="bg-slate-200 font-normal py-3 px-1 text-center">{{ $pemesanan['nomor_transaksi'] }}</td>
-                            <td class="bg-slate-200 font-normal py-3 px-1 text-center">{{ $pemesanan['tanggal_masuk'] }}</td>
-                            <td class="bg-slate-200 font-normal py-3 px-1 text-center">{{ $pemesanan['jenis_produk'] }}</td>
-                            <td class="bg-slate-200 font-normal py-3 px-1 text-center">{{ $pemesanan->pelanggan->nama }}</td>
-                            <td class="bg-slate-200 font-normal py-3 px-1 text-center">Desain</td>
-                            <td class="bg-slate-200 font-normal py-3 px-1 text-center">
+                            <th>No</th>
+                            <th>Nomor Transaksi</th>
+                            <th>Tanggal Masuk</th>
+                            <th>Produk</th>
+                            <th>Pelanggan</th>
+                            <th>Progress</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($pemesanans as $key => $pemesanan)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $pemesanan['nomor_transaksi'] }}</td>
+                            <td>{{ $pemesanan['tanggal_masuk'] }}</td>
+                            <td>{{ $pemesanan['jenis_produk'] }}</td>
+                            <td>{{ $pemesanan->pelanggan->nama }}</td>
+                            <td>Desain</td>
+                            <td>
                                 <div class="flex gap-2 justify-center">
-                                    <button type="button" class="rounded-md bg-blue-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"><i class="ri-search-line"></i></button>
+                                    <a href="{{ url('admin/detail-pemesanan/'.$pemesanan['id']) }}">
+                                        <button type="button" class="rounded-md bg-blue-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-blue-700"><i class="ri-search-line"></i></button>
+                                    </a>
                                     <form action="{{ url('/admin/master-pemesanan/'.$pemesanan['id']) }}" method="post">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="rounded-md bg-red-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"><i class="ri-delete-bin-line"></i></button>
+                                        <button type="submit" class="rounded-md bg-red-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-red-700"><i class="ri-delete-bin-line"></i></button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
-                    @endforeach
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
 <script>
+    $(document).ready(function() {
+    $('#datatable').DataTable();
+});
+
     document.addEventListener('DOMContentLoaded', function () {
     const selectPelanggan = document.getElementById('id_pelanggan');
     const inputNomorTelepon = document.getElementById('no_telpon');
@@ -290,22 +295,22 @@
 
         // Melakukan permintaan ke server untuk mendapatkan data pelanggan
         fetch(`/find-pelanggan/${pelangganId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Mengisi inputan dengan data pelanggan yang diterima
-                inputNomorTelepon.value = data.nomor_telepon || ''; // Sesuaikan dengan nama field dari response
-                inputAlamat.value = data.alamat || ''; // Sesuaikan dengan nama field dari response
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Mengisi inputan dengan data pelanggan yang diterima
+                    inputNomorTelepon.value = data.nomor_telepon || ''; // Sesuaikan dengan nama field dari response
+                    inputAlamat.value = data.alamat || ''; // Sesuaikan dengan nama field dari response
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        });
     });
-});
 </script>
 <script>
     document.getElementById('jumlah_produk').addEventListener('input', function() {
@@ -325,5 +330,43 @@
             });
         });
     });
+</script>
+<script>
+    // Fungsi untuk menghitung total harga dan sisa pembayaran
+    function hitungTotalHarga() {
+        // Ambil nilai dari input jumlah produk dan harga satuan
+        const jumlahProduk = parseFloat(document.getElementById('jumlah_produk').value) || 0;
+        const hargaSatuan = parseFloat(document.getElementById('harga_satuan').value) || 0;
+
+        // Hitung total harga
+        const totalHarga = jumlahProduk * hargaSatuan;
+
+        // Tampilkan total harga di input total_harga
+        document.getElementById('total_harga').value = totalHarga.toFixed(2); // Format menjadi 2 desimal
+
+        // Ambil nilai dari input pembayaran awal
+        const pembayaranAwal = parseFloat(document.getElementById('pembayaran_awal').value) || 0;
+
+        // Hitung sisa pembayaran
+        const sisaPembayaran = totalHarga - pembayaranAwal;
+
+        // Tampilkan sisa pembayaran di input sisa_pembayaran
+        document.getElementById('sisa_pembayaran').value = sisaPembayaran.toFixed(2); // Format menjadi 2 desimal
+    }
+
+    // Fungsi untuk menghitung sisa pembayaran jika ada perubahan pada pembayaran awal
+    function hitungSisaPembayaran() {
+        const totalHarga = parseFloat(document.getElementById('total_harga').value) || 0;
+        const pembayaranAwal = parseFloat(document.getElementById('pembayaran_awal').value) || 0;
+
+        const sisaPembayaran = totalHarga - pembayaranAwal;
+
+        document.getElementById('sisa_pembayaran').value = sisaPembayaran.toFixed(2); // Format menjadi 2 desimal
+    }
+
+    // Tambahkan event listener pada input
+    document.getElementById('jumlah_produk').addEventListener('input', hitungTotalHarga);
+    document.getElementById('harga_satuan').addEventListener('input', hitungTotalHarga);
+    document.getElementById('pembayaran_awal').addEventListener('input', hitungSisaPembayaran);
 </script>
 @endsection

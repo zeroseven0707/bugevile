@@ -5,13 +5,17 @@
     <div class="flex">
         <h1 class="text-2xl mb-4">Tambah Data Produk</h1>
     </div>
-
     @if(session('success'))
         <div class="bg-green-500 text-white p-2 mb-4 rounded">
             {{ session('success') }}
         </div>
     @endif
-    <form >
+    @if(session('error'))
+        <div class="bg-red-500 text-white p-2 mb-4 rounded">
+            {{ session('error') }}
+        </div>
+    @endif
+    <form action="{{ route('admin.master.store') }}" method="POST" enctype="multipart/form-data">@csrf
         <div class="bg-white p-8 rounded-2xl">
                 <div class="space-y-12">
                     <div class="border-b border-gray-900/10 pb-12">
@@ -19,14 +23,14 @@
                             <div class="sm:col-span-3">
                                 <label for="kode_produk" class="block text-base/6 font-normal text-gray-900">Kode Produk</label>
                                 <div class="mt-2">
-                                    <input type="text" name="kode_produk" id="kode_produk" required class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
+                                    <input type="text" name="kode_produk" id="kode_produk"  class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
                                 </div>
                             </div>
 
                             <div class="sm:col-span-3">
                                 <label for="nama_produk" class="block text-base/6 font-normal text-gray-900">Nama Produk</label>
                                 <div class="mt-2">
-                                    <input type="text" name="nama_produk" id="nama_produk" required class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
+                                    <input type="text" name="nama_produk" id="nama_produk"  class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
                                 </div>
                             </div>
                         </div>
@@ -35,7 +39,7 @@
                             <div class="sm:col-span-3">
                                 <label for="jenis_pola" class="block text-base/6 font-normal text-gray-900">Jenis Pola</label>
                                 <div class="mt-2">
-                                    <input type="text" name="jenis_pola" id="jenis_pola" required class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
+                                    <input type="text" name="jenis_pola" id="jenis_pola"  class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
                                 </div>
                             </div>
 
@@ -43,7 +47,7 @@
                                 <label for="total_harga_spesifikasi" class="block text-base/6 font-normal text-gray-900">Total Harga Spesifikasi</label>
                                 <div class="mt-2">
                                     <div class="relative">
-                                        <input type="number" name="total_harga_spesifikasi" id="total_harga_spesifikasi" required readonly
+                                        <input type="number" name="total_harga_spesifikasi" id="total_harga_spesifikasi"  readonly
                                             class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6"
                                             >
                                         <button type="button" id="openModal" style="transform:translateY(-50%); top:50%;"
@@ -57,7 +61,7 @@
                             <div class="sm:col-span-3">
                                 <label for="jenis_print" class="block text-base/6 font-normal text-gray-900">Jenis Print</label>
                                 <div class="mt-2">
-                                    <input type="text" name="jenis_print" id="jenis_print" required class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
+                                    <input type="text" name="jenis_print" id="jenis_print"  class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6">
                                 </div>
                             </div>
 
@@ -65,7 +69,7 @@
                                 <label for="total_harga_print" class="block text-base/6 font-normal text-gray-900">Total Harga Print</label>
                                 <div class="mt-2">
                                     <div class="relative">
-                                        <input type="number" name="total_harga_print" id="total_harga_print" required class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6" oninput="calculateProductionCost()">
+                                        <input type="number" name="total_harga_print" id="total_harga_print"  class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-base ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6" oninput="calculateProductionCost()">
                                         <button type="button" id="openModalSpek"  style="transform:translateY(-50%); top:50%;" class="absolute right-3 rounded-md bg-blue-500 px-3 py-1 text-sm font-normal text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Tambah Spesifikasi Print <i class="ri-add-fill"></i></button>
                                     </div>
                                 </div>
@@ -84,7 +88,7 @@
                         <div class="sm:col-span-2">
                             <label for="harga_jual" class="block text-base/6 font-normal text-gray-900">Harga Jual</label>
                             <div class="mt-2">
-                                <input type="number" name="harga_jual" id="harga_jual" required class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6" oninput="calculateProfit()">
+                                <input type="number" name="harga_jual" id="harga_jual"  class="block w-full rounded-md border-0 px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-base/6" oninput="calculateProfit()">
                             </div>
                         </div>
 
@@ -145,7 +149,10 @@
                             @foreach ($attributes as $key => $attribute)
                                 <tr>
                                     <td class="bg-slate-200 font-normal py-3 px-1 text-center">
-                                        <input type="checkbox" name="master_attribute_id" class="atribut-checkbox" data-id="{{ $attribute['id'] }}" value="{{ $attribute['harga'] }}" data-nama="{{ $attribute['nama'] }}">
+                                        <input type="checkbox" name="master_attribute_id[]" class="atribut-checkbox"
+                                            value="{{ $attribute['id'] }}"
+                                            data-harga="{{ $attribute['harga'] }}"
+                                            data-nama="{{ $attribute['nama'] }}">
                                     </td>
                                     <td class="bg-slate-200 font-normal py-3 text-start px-5">
                                         <div class="relative flex justify-between">
@@ -168,8 +175,8 @@
                                 <td colspan="4">
                                     <div class="p-4 border-t">
                                         <div class="flex space-x-4">
-                                            <input type="text" name="nama" id="nama" class="border p-2 rounded-md" placeholder="Nama Atribut" required />
-                                            <input type="number" name="harga" id="harga" class="border p-2 rounded-md" placeholder="Harga" required />
+                                            <input type="text" name="nama" id="nama" class="border p-2 rounded-md" placeholder="Nama Atribut"  />
+                                            <input type="number" name="harga" id="harga" class="border p-2 rounded-md" placeholder="Harga"  />
                                             <button type="button" id="save-attributes" class="bg-green-500 text-white p-2 rounded-md">Save</button>
                                         </div>
                                     </div>
@@ -204,7 +211,10 @@
                             @foreach ($prints as $print)
                                 <tr>
                                     <td class="bg-slate-200 font-normal py-3 px-1 text-center">
-                                        <input type="checkbox" name="master_spesifikasi_print_id" class="print-checkbox" data-id="{{ $print['id'] }}" value="{{ $print['harga'] }}" data-nama="{{ $attribute['nama'] }}">
+                                        <input type="checkbox" name="master_spesifikasi_print_id[]" class="print-checkbox"
+                                            value="{{ $print['id'] }}"
+                                            data-harga="{{ $print['harga'] }}"
+                                            data-nama="{{ $attribute['nama'] }}">
                                     </td>
                                     <td class="bg-slate-200 font-normal py-3 text-start px-5">{{ $print['nama'] }}</td>
                                     <td class="bg-slate-200 font-normal py-3 px-2 text-center">{{ number_format($print['harga']) }}</td>
@@ -218,8 +228,8 @@
                                 <td colspan="4">
                                     <div class="p-4 border-t">
                                         <div class="flex space-x-4">
-                                            <input type="text" id="nama_spek" class="border p-2 rounded-md" placeholder="Spesifikasi Print" required />
-                                            <input type="number" id="harga_spek" class="border p-2 rounded-md" placeholder="Harga" required />
+                                            <input type="text" id="nama_spek" class="border p-2 rounded-md" placeholder="Spesifikasi Print"  />
+                                            <input type="number" id="harga_spek" class="border p-2 rounded-md" placeholder="Harga"  />
                                             <button id="save-button" class="bg-green-500 text-white p-2 rounded-md">Save</button>
                                         </div>
                                     </div>
@@ -263,7 +273,7 @@
                                 </div>
                                 <div class="relative mt-5">
                                     <label for="npk">Nama Kain :</label>
-                                    <input type="text" name="name_attributes" id="npk" required class="w-full border border-gray-300 p-2 mb-2" placeholder="Isi nama kain">
+                                    <input type="text" name="name_attributes" id="npk"  class="w-full border border-gray-300 p-2 mb-2" placeholder="Isi nama kain">
                                 </div>
                             <div class="mt-3 flex justify-start gap-3">
                                 <button type="button" id="closeModalAdd" class="px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
@@ -313,19 +323,19 @@
         function calculateTotalHargaSpesifikasi() {
             let totalHarga = 0;
 
-                    // Iterasi semua checkbox atribut untuk mengecek yang dicentang
-                    atributCheckboxes.forEach(function (checkbox) {
-                        if (checkbox.checked) {
-                            // Jika checkbox dicentang, tambahkan harga ke totalHarga
-                            totalHarga += parseFloat(checkbox.value);
-                        }
-                    });
+            // Iterasi semua checkbox atribut untuk mengecek yang dicentang
+            atributCheckboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    // Jika checkbox dicentang, tambahkan harga dari data-harga ke totalHarga
+                    totalHarga += parseFloat(checkbox.getAttribute('data-harga'));
+                }
+            });
 
-                    // Update total harga spesifikasi di input field
-                    document.getElementById('total_harga_spesifikasi').value = totalHarga;
+            // Update total harga spesifikasi di input field
+            document.getElementById('total_harga_spesifikasi').value = totalHarga;
 
-                    // Panggil function untuk menghitung biaya produksi dan laba
-                    calculateProductionCost();
+            // Panggil function untuk menghitung biaya produksi dan laba
+            calculateProductionCost();
         }
 
         // Tambahkan event listener ke setiap checkbox
@@ -340,19 +350,20 @@
         // Fungsi untuk menghitung total harga spesifikasi
         function calculateTotalHargaSpesifikasiPrint() {
             let totalHarga = 0;
-                    // Iterasi semua checkbox print untuk mengecek yang dicentang
-                    printCheckboxes.forEach(function (checkbox) {
-                        if (checkbox.checked) {
-                            // Jika checkbox dicentang, tambahkan harga ke totalHarga
-                            totalHarga += parseFloat(checkbox.value);
-                        }
-                    });
 
-                    // Update total harga spesifikasi di input field
-                    document.getElementById('total_harga_print').value = totalHarga;
+            // Iterasi semua checkbox print untuk mengecek yang dicentang
+            printCheckboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    // Jika checkbox dicentang, tambahkan harga dari data-harga ke totalHarga
+                    totalHarga += parseFloat(checkbox.getAttribute('data-harga'));
+                }
+            });
 
-                    // Panggil function untuk menghitung biaya produksi dan laba
-                    calculateProductionCost();
+            // Update total harga spesifikasi di input field
+            document.getElementById('total_harga_print').value = totalHarga;
+
+            // Panggil function untuk menghitung biaya produksi dan laba
+            calculateProductionCost();
         }
 
         // Tambahkan event listener ke setiap checkbox
@@ -434,57 +445,56 @@
 
     // Menangani submit form untuk menambah Spek Print
     document.getElementById('save-button').addEventListener('click', function (e) {
-    e.preventDefault(); // Mencegah aksi default (misalnya refresh halaman)
+        e.preventDefault(); // Mencegah aksi default (misalnya refresh halaman)
 
-    // Ambil data dari input
-    const nama = document.getElementById('nama_spek').value;
-    const harga = document.getElementById('harga_spek').value;
+        // Ambil data dari input
+        const nama = document.getElementById('nama_spek').value;
+        const harga = document.getElementById('harga_spek').value;
 
-    // Validasi input (opsional)
-    if (!nama || !harga) {
-        alert("Harap isi semua kolom!");
-        return;
-    }
+        // Validasi input (opsional)
+        if (!nama || !harga) {
+            alert("Harap isi semua kolom!");
+            return;
+        }
 
-    // Kirim data menggunakan AJAX
-    fetch("{{ route('print.store') }}", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-            nama: nama,
-            harga: harga
+        // Kirim data menggunakan AJAX
+        fetch("{{ route('print.store') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                nama: nama,
+                harga: harga
+            })
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Menambahkan data baru ke tabel setelah sukses
-        const tableBody = document.getElementById('print-table-body');
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td class="bg-slate-200 font-normal py-3 px-1 text-center">
-                <input type="checkbox" class="atribut-checkbox" value="${data.harga}" data-nama="${data.nama}">
-            </td>
-            <td class="bg-slate-200 font-normal py-3 text-start px-5">${data.nama}</td>
-            <td class="bg-slate-200 font-normal py-3 px-2 text-center">${data.harga}</td>
-            <td class="bg-slate-200 font-normal py-3 px-1 text-center">
-                <button type="button" class="rounded-md bg-blue-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"><i class="ri-pencil-line"></i></button>
-            </td>
-        `;
-        tableBody.appendChild(row);
+        .then(response => response.json())
+        .then(data => {
+            // Menambahkan data baru ke tabel setelah sukses
+            const tableBody = document.getElementById('print-table-body');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="bg-slate-200 font-normal py-3 px-1 text-center">
+                    <input type="checkbox" class="atribut-checkbox" value="${data.harga}" data-nama="${data.nama}">
+                </td>
+                <td class="bg-slate-200 font-normal py-3 text-start px-5">${data.nama}</td>
+                <td class="bg-slate-200 font-normal py-3 px-2 text-center">${data.harga}</td>
+                <td class="bg-slate-200 font-normal py-3 px-1 text-center">
+                    <button type="button" class="rounded-md bg-blue-500 px-2 py-1 text-base font-normal text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"><i class="ri-pencil-line"></i></button>
+                </td>
+            `;
+            tableBody.appendChild(row);
 
-        // Reset form input setelah sukses
-        document.getElementById('nama_spek').value = '';
-        document.getElementById('harga_spek').value = '';
-        document.getElementById('new-print-form').style.display = 'none';
-    })
-    .catch(error => {
-        console.error('Error:', error);
+            // Reset form input setelah sukses
+            document.getElementById('nama_spek').value = '';
+            document.getElementById('harga_spek').value = '';
+            document.getElementById('new-print-form').style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
-});
-
 </script>
 {{-- Kalkulasi --}}
 <script>
@@ -496,7 +506,6 @@
         document.getElementById('harga_produksi').value = hargaProduksi; // Tidak menggunakan toFixed
         calculateProfit(); // Panggil untuk menghitung laba setiap kali harga produksi dihitung
     }
-
     function calculateProfit() {
         const hargaProduksi = parseFloat(document.getElementById('harga_produksi').value) || 0;
         const hargaJual = parseFloat(document.getElementById('harga_jual').value) || 0;
@@ -669,7 +678,7 @@
     });
 </script>
 
-<script>
+{{-- <script>
     document.getElementById('save-all').addEventListener('click', function(event) {
         event.preventDefault(); // Mencegah form dari pengiriman default
 
@@ -698,5 +707,5 @@
             // alert('Terjadi kesalahan dalam pengiriman data!');
         });
     });
-</script>
+</script> --}}
 @endsection
