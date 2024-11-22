@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 09, 2024 at 11:30 AM
+-- Generation Time: Nov 22, 2024 at 08:45 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,10 +30,20 @@ SET time_zone = "+00:00";
 CREATE TABLE `attributes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
-  `atribute_id` bigint(20) UNSIGNED NOT NULL,
+  `attribute_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `attributes`
+--
+
+INSERT INTO `attributes` (`id`, `product_id`, `attribute_id`, `created_at`, `updated_at`) VALUES
+(1, 42, 1, '2024-11-10 12:04:03', '2024-11-10 12:04:03'),
+(2, 42, 5, '2024-11-10 12:04:03', '2024-11-10 12:04:03'),
+(3, 43, 1, '2024-11-10 12:07:53', '2024-11-10 12:07:53'),
+(4, 43, 2, '2024-11-10 12:07:53', '2024-11-10 12:07:53');
 
 -- --------------------------------------------------------
 
@@ -75,6 +85,30 @@ CREATE TABLE `failed_jobs` (
   `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lampirans`
+--
+
+CREATE TABLE `lampirans` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `detail_pemesanan_id` bigint(20) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `nomor_punggung` int(11) NOT NULL,
+  `ukuran` varchar(255) NOT NULL,
+  `keterangan` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `lampirans`
+--
+
+INSERT INTO `lampirans` (`id`, `detail_pemesanan_id`, `nama`, `nomor_punggung`, `ukuran`, `keterangan`, `created_at`, `updated_at`) VALUES
+(3, 9, 'Jahitan', 12, 'l', '-', '2024-11-22 00:31:35', '2024-11-22 00:31:35');
 
 -- --------------------------------------------------------
 
@@ -171,7 +205,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (11, '2024_11_03_196221_create_attribute_photos_table', 1),
 (12, '2024_11_06_195335_create_master_spesifikasi_prints_table', 1),
 (13, '2024_11_06_214132_create_pemesanans_table', 1),
-(14, '2024_11_07_220209_create_spesifikasi_prints_table', 1);
+(14, '2024_11_07_220209_create_spesifikasi_prints_table', 1),
+(15, '2024_11_11_160234_create_progress_table', 2),
+(16, '2024_11_12_191846_create_lampirans_table', 2);
 
 -- --------------------------------------------------------
 
@@ -215,12 +251,14 @@ INSERT INTO `pelanggan` (`id`, `nama`, `nomor_telepon`, `alamat`, `created_at`, 
 
 CREATE TABLE `pemesanans` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `nomor_transaksi` text NOT NULL,
   `id_pelanggan` bigint(20) UNSIGNED NOT NULL,
   `no_telpon` varchar(255) NOT NULL,
   `alamat` varchar(255) NOT NULL,
   `tanggal_masuk` date NOT NULL,
   `tanggal_selesai` date NOT NULL,
   `total_waktu_pengerjaan` varchar(255) DEFAULT NULL,
+  `product_id` int(11) NOT NULL,
   `jenis_produk` varchar(255) NOT NULL,
   `jenis_pola` varchar(255) NOT NULL,
   `jenis_print` varchar(255) NOT NULL,
@@ -247,8 +285,8 @@ CREATE TABLE `pemesanans` (
 -- Dumping data for table `pemesanans`
 --
 
-INSERT INTO `pemesanans` (`id`, `id_pelanggan`, `no_telpon`, `alamat`, `tanggal_masuk`, `tanggal_selesai`, `total_waktu_pengerjaan`, `jenis_produk`, `jenis_pola`, `jenis_print`, `jumlah_produk`, `harga_satuan`, `total_harga`, `pembayaran_awal`, `sisa_pembayaran`, `qty_xxs`, `qty_xs`, `qty_s`, `qty_m`, `qty_l`, `qty_xl`, `qty_2xl`, `qty_3xl`, `qty_4xl`, `qty_5xl`, `created_at`, `updated_at`) VALUES
-(4, 1, '44444444', 'ssa', '2024-10-11', '2025-04-11', '4', 'awawa', '1', '2', 5, 1000.00, 5000.00, 1000.00, 4000.00, NULL, 1, 1, 1, 1, 1, 0, NULL, NULL, NULL, '2024-11-08 18:09:34', '2024-11-08 18:09:34');
+INSERT INTO `pemesanans` (`id`, `nomor_transaksi`, `id_pelanggan`, `no_telpon`, `alamat`, `tanggal_masuk`, `tanggal_selesai`, `total_waktu_pengerjaan`, `product_id`, `jenis_produk`, `jenis_pola`, `jenis_print`, `jumlah_produk`, `harga_satuan`, `total_harga`, `pembayaran_awal`, `sisa_pembayaran`, `qty_xxs`, `qty_xs`, `qty_s`, `qty_m`, `qty_l`, `qty_xl`, `qty_2xl`, `qty_3xl`, `qty_4xl`, `qty_5xl`, `created_at`, `updated_at`) VALUES
+(9, 'PO780847848302', 1, '44444444', 'ssa', '2024-03-10', '2026-05-10', '2', 43, 'sihab', 'pola', 'reglan', 3, 100.00, 300.00, 200.00, 100.00, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-21 12:28:04', '2024-11-21 12:28:04');
 
 -- --------------------------------------------------------
 
@@ -297,7 +335,39 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `kode_produk`, `nama_produk`, `jenis_pola`, `total_harga_spesifikasi`, `jenis_print`, `total_harga_print`, `harga_jual`, `harga_produksi`, `laba`, `foto`, `id_spesifikasi`, `created_at`, `updated_at`) VALUES
-(27, 'kode05', 'awawa', 'pola', 1000, 'fddd', 1000, 5000000, 2000, 4998000, 'products/0sf2p6cqkyFrmKK9rm4Gn4H2pbCnlShS5KcN9qcD.png', NULL, '2024-11-07 18:41:48', '2024-11-07 18:41:48');
+(42, 'kode01', 'sihab', 'pola', 2000, 'clasic', 6000, 10000, 8000, 2000, 'products/epwpcvb5cVif06ryZVoneWnkRlF6QMJb723PE1zP.jpg', NULL, '2024-11-10 12:04:03', '2024-11-10 12:04:03'),
+(43, 'kode01', 'sihab', 'pola', 2000, 'reglan', 4000, 10000, 6000, 4000, 'products/LuKlxTK1qrxTjBADTToqUUAjCzuP6mOpTpOSCnqT.jpg', NULL, '2024-11-10 12:07:53', '2024-11-10 12:07:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `progress`
+--
+
+CREATE TABLE `progress` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `pemesanan_id` bigint(20) UNSIGNED NOT NULL,
+  `image_pola_jersey` longtext DEFAULT NULL,
+  `image_revisi` longtext DEFAULT NULL,
+  `image_layout_print` longtext DEFAULT NULL,
+  `image_press` longtext DEFAULT NULL,
+  `image_jahit` longtext DEFAULT NULL,
+  `status_design_jersey` enum('selesai','belum') NOT NULL DEFAULT 'belum',
+  `status_pola_jersey` enum('selesai','belum') DEFAULT 'belum',
+  `status_revisi` enum('selesai','belum') DEFAULT 'belum',
+  `status_layout_print` enum('selesai','belum') DEFAULT 'belum',
+  `status_press` enum('selesai','belum') DEFAULT 'belum',
+  `status_jahit` enum('selesai','belum') DEFAULT 'belum',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `progress`
+--
+
+INSERT INTO `progress` (`id`, `pemesanan_id`, `image_pola_jersey`, `image_revisi`, `image_layout_print`, `image_press`, `image_jahit`, `status_design_jersey`, `status_pola_jersey`, `status_revisi`, `status_layout_print`, `status_press`, `status_jahit`, `created_at`, `updated_at`) VALUES
+(3, 9, 'images/FhrAq34yBpxGFcSLHCTZhOu5q3g6wpUGPbuM8jme.jpg', 'images/L4KwvSD8gWV3cdiEcgenCj2ZZ2bABmG0gxIVj0ya.jpg', NULL, NULL, NULL, 'selesai', 'selesai', 'selesai', 'selesai', 'selesai', 'belum', '2024-11-21 15:01:55', '2024-11-22 00:35:36');
 
 -- --------------------------------------------------------
 
@@ -324,6 +394,17 @@ CREATE TABLE `spesifikasi_prints` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `spesifikasi_prints`
+--
+
+INSERT INTO `spesifikasi_prints` (`id`, `product_id`, `spesifikasi_print_id`, `created_at`, `updated_at`) VALUES
+(1, 42, 1, '2024-11-10 12:04:03', '2024-11-10 12:04:03'),
+(2, 42, 11, '2024-11-10 12:04:03', '2024-11-10 12:04:03'),
+(3, 42, 12, '2024-11-10 12:04:03', '2024-11-10 12:04:03'),
+(4, 43, 1, '2024-11-10 12:07:53', '2024-11-10 12:07:53'),
+(5, 43, 12, '2024-11-10 12:07:53', '2024-11-10 12:07:53');
 
 -- --------------------------------------------------------
 
@@ -360,7 +441,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 ALTER TABLE `attributes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `attributes_product_id_foreign` (`product_id`),
-  ADD KEY `attributes_atribute_id_foreign` (`atribute_id`);
+  ADD KEY `attributes_atribute_id_foreign` (`attribute_id`);
 
 --
 -- Indexes for table `attribute_photos`
@@ -374,6 +455,12 @@ ALTER TABLE `attribute_photos`
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indexes for table `lampirans`
+--
+ALTER TABLE `lampirans`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `master_atributes`
@@ -426,6 +513,12 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `progress`
+--
+ALTER TABLE `progress`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `specifications`
 --
 ALTER TABLE `specifications`
@@ -454,7 +547,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `attributes`
 --
 ALTER TABLE `attributes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `attribute_photos`
@@ -467,6 +560,12 @@ ALTER TABLE `attribute_photos`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `lampirans`
+--
+ALTER TABLE `lampirans`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `master_atributes`
@@ -484,7 +583,7 @@ ALTER TABLE `master_spesifikasi_prints`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `pelanggan`
@@ -496,7 +595,7 @@ ALTER TABLE `pelanggan`
 -- AUTO_INCREMENT for table `pemesanans`
 --
 ALTER TABLE `pemesanans`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -508,7 +607,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT for table `progress`
+--
+ALTER TABLE `progress`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `specifications`
@@ -520,7 +625,7 @@ ALTER TABLE `specifications`
 -- AUTO_INCREMENT for table `spesifikasi_prints`
 --
 ALTER TABLE `spesifikasi_prints`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -536,7 +641,7 @@ ALTER TABLE `users`
 -- Constraints for table `attributes`
 --
 ALTER TABLE `attributes`
-  ADD CONSTRAINT `attributes_atribute_id_foreign` FOREIGN KEY (`atribute_id`) REFERENCES `master_atributes` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `attributes_atribute_id_foreign` FOREIGN KEY (`attribute_id`) REFERENCES `master_atributes` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `attributes_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
